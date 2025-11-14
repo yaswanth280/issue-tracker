@@ -1,41 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>My Dashboard</h2>
-<p>Hello, <strong>{{ current_user.username }}</strong>!</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-tachometer-alt"></i> My Dashboard</h2>
+    <a href="{{ url_for('raise_issue') }}" class="btn btn-success">
+        <i class="fas fa-plus-circle"></i> Raise New Issue
+    </a>
+</div>
 
-<a href="{{ url_for('raise_issue') }}" style="color: #007bff; font-weight: bold; font-size: 16px;">+ Raise New Issue</a>
-
-<h3 style="margin-top: 20px;">My Issues</h3>
-
-{% if issues %}
-<table style="width:100%; border-collapse: collapse; margin-top: 10px;">
-    <tr style="background: #f0f0f0;">
-        <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Title</th>
-        <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Category</th>
-        <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Status</th>
-        <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Date</th>
-        <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Action</th>
-    </tr>
-    {% for issue in issues %}
-    <tr>
-        <td style="padding: 10px; border: 1px solid #ddd;">{{ issue.title }}</td>
-        <td style="padding: 10px; border: 1px solid #ddd;">{{ issue.category }}</td>
-        <td style="padding: 10px; border: 1px solid #ddd;">
-            {% if issue.status == 'Open' %}
-                <span style="color: orange; font-weight: bold;">Open</span>
-            {% else %}
-                <span style="color: green; font-weight: bold;">{{ issue.status }}</span>
-            {% endif %}
-        </td>
-        <td style="padding: 10px; border: 1px solid #ddd;">{{ issue.created_at.strftime('%b %d, %Y') }}</td>
-        <td style="padding: 10px; border: 1px solid #ddd;">
-            <a href="{{ url_for('view_issue', issue_id=issue.id) }}" style="color: #007bff;">View Details</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<p><em>No issues yet. <a href="{{ url_for('raise_issue') }}">Raise your first one!</a></em></p>
-{% endif %}
-
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">My Issues</h5>
+        {% if issues %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for issue in issues %}
+                    <tr>
+                        <td><strong>{{ issue.title }}</strong></td>
+                        <td><span class="badge bg-info">{{ issue.category|title }}</span></td>
+                        <td>
+                            {% if issue.status == 'Open' %}
+                                <span class="badge badge-open">Open</span>
+                            {% else %}
+                                <span class="badge badge-responded">Responded</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ issue.created_at.strftime('%b %d, %Y') }}</td>
+                        <td>
+                            <a href="{{ url_for('view_issue', issue_id=issue.id) }}" class="btn btn-sm btn-outline-primary">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">No issues yet. <a href="{{ url_for('raise_issue') }}">Raise your first one!</a></p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
