@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Raise New Issue</h2>
+<form method="post">
+    <input type="text" name="title" placeholder="Title" required><br><br>
+    <textarea name="description" placeholder="Description" rows="4" required></textarea><br><br>
+    <select name="category" required>
+        <option value="leave">Leave Request</option>
+        <option value="documentation">Documentation</option>
+        <option value="monitor">Monitor Issue</option>
+        <option value="other">Other</option>
+    </select><br><br>
+    <button type="submit">Submit Issue</button>
+    <a href="{{ url_for('dashboard') }}">Cancel</a>
+</form>
+{% endblock %}

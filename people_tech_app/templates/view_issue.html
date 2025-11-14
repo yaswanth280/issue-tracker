@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Issue #{{ issue.id }}: {{ issue.title }}</h2>
+
+<p><strong>Status:</strong> 
+    {% if issue.status == 'Open' %}
+        <span style="color: orange; font-weight: bold;">Open</span>
+    {% else %}
+        <span style="color: green; font-weight: bold;">{{ issue.status }}</span>
+    {% endif %}
+</p>
+
+<p><strong>Category:</strong> {{ issue.category }}</p>
+<p><strong>Created:</strong> {{ issue.created_at.strftime('%b %d, %Y %H:%M') }}</p>
+
+<h3>Description</h3>
+<div style="background: #f9f9f9; padding: 15px; border-left: 4px solid #007bff; margin: 15px 0; border-radius: 5px;">
+    {{ issue.description }}
+</div>
+
+<h3>Admin Response</h3>
+{% if responses %}
+    {% for r in responses %}
+    <div style="background: #e9f7ef; padding: 15px; border-left: 4px solid #28a745; margin: 15px 0; border-radius: 5px;">
+        <strong>Admin:</strong> {{ r.admin.username }}<br>
+        <small style="color: #666;">{{ r.created_at.strftime('%b %d, %Y %H:%M') }}</small><br>
+        <p>{{ r.content }}</p>
+    </div>
+    {% endfor %}
+{% else %}
+    <p style="color: #999; font-style: italic;">No response from admin yet. Please wait...</p>
+{% endif %}
+
+<br>
+<a href="{{ url_for('dashboard') }}" style="color: #007bff; text-decoration: none; font-weight: bold;">← Back to My Issues</a>
+{% endblock %}

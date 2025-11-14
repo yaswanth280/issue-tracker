@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Issue #{{ issue.id }}: {{ issue.title }}</h2>
+<p><strong>User:</strong> {{ issue.user.username }} | <strong>Category:</strong> {{ issue.category }}</p>
+<p><strong>Description:</strong></p>
+<p>{{ issue.description }}</p>
+
+<h3>Responses</h3>
+{% if responses %}
+<ul>
+    {% for r in responses %}
+    <li><strong>{{ r.created_at.strftime('%b %d, %Y %H:%M') }}:</strong> {{ r.content }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No responses yet.</p>
+{% endif %}
+
+<h3>Add Response</h3>
+<form method="post">
+    <textarea name="content" rows="5" placeholder="Type your response..." style="width:100%" required></textarea><br>
+    <button type="submit" style="padding:10px 20px; background:#007bff; color:white; border:none; border-radius:5px;">Send Response</button>
+    <a href="{{ url_for('admin_dashboard') }}" style="margin-left:10px;">Back</a>
+</form>
+{% endblock %}

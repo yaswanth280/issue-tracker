@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>People Tech</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        a { margin: 0 10px; color: #007bff; }
+        .flash { padding: 10px; margin: 10px 0; background: #f0f0f0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>People Tech Tracker</h1>
+
+    <!-- NAV -->
+    {% if current_user.is_authenticated %}
+        <p>Logged in as: <strong>{{ current_user.username }}</strong></p>
+        {% if current_user.is_admin %}
+            <a href="/admin_dashboard">Admin Dashboard</a>
+        {% else %}
+            <a href="/dashboard">My Issues</a>
+            <a href="/raise_issue">Raise Issue</a>
+        {% endif %}
+        <a href="/logout">Logout</a>
+    {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+    {% endif %}
+
+    <hr>
+
+    <!-- FLASH MESSAGES -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="flash">{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- PAGE CONTENT -->
+    {% block content %}{% endblock %}
+</body>
+</html>
